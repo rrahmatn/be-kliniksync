@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Clinic" ALTER COLUMN "expired_at" SET DATA TYPE TIMESTAMPTZ;

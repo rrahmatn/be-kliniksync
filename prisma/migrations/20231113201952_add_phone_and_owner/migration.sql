@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Clinic" ADD COLUMN     "owner" TEXT NOT NULL DEFAULT 'udin',
+ADD COLUMN     "phone" TEXT NOT NULL DEFAULT '087727272';
