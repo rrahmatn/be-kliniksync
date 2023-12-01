@@ -374,8 +374,6 @@ export class AuthService {
   }
 
   async refreshToken(refreshToken: string): Promise<NewToken> {
-    // Di sini, Anda perlu memeriksa validitas refresh token dan mendapatkan data pengguna terkait.
-    // Jika valid, Anda dapat menghasilkan access token yang baru.
     const userData = await this.verifyRefreshToken(refreshToken);
     // console.log(userData)
     return this.newToken(
@@ -390,12 +388,10 @@ export class AuthService {
     token: string,
   ): Promise<{ userId: number; name: string; email: string; role: string }> {
     const rtsecret = await this.config.get('REFRESH_TOKEN');
-
     try {
       const payload = await this.jwt.verify(token, {
         secret: rtsecret,
       });
-      // console.log(payload)
       return {
         userId: payload.sub,
         name: payload.name,

@@ -44,11 +44,60 @@ export class ClinicService {
       },
     });
 
+    const transaction = await this.prisma.medical_History.count({
+      where: {
+        clinic_id: id,
+        is_deleted: false,
+      },
+    });
+    const bill = await this.prisma.medical_History.count({
+      where: {
+        clinic_id: id,
+        is_deleted: false,
+        payment_status: false,
+      },
+    });
+
+    const doctors = await this.prisma.doctor.count({
+      where: {
+        clinic_id: id,
+        is_deleted: false,
+      },
+    });
+    const receptionist = await this.prisma.receptionist.count({
+      where: {
+        clinic_id: id,
+        is_deleted: false,
+      },
+    });
+    const pharmacy = await this.prisma.pharmacy.count({
+      where: {
+        clinic_id: id,
+        is_deleted: false,
+      },
+    });
+    const cashier = await this.prisma.cashier.count({
+      where: {
+        clinic_id: id,
+        is_deleted: false,
+      },
+    });
+
     if (!clinic) {
       throw new NotFoundException('clinic tidak ditemukan');
     }
 
-    return ClinicResponse(200, clinic, 'berhashil mendapatkan data');
+    const response = {
+      clinic,
+      transaction,
+      bill,
+      doctors,
+      receptionist,
+      pharmacy,
+      cashier,
+    };
+
+    return ClinicResponse(200, response, 'berhashil mendapatkan data');
   }
   async editClinic(id: number, dto: EditClinicDto) {
     try {
@@ -66,6 +115,9 @@ export class ClinicService {
       return new NotFoundException('clinic tidak ditemukan');
     }
   }
+
+  
+
 
   async changePassword(req: any, dto: ChangePassword) {
     if (dto.newPassword !== dto.confPassword) {
@@ -88,10 +140,9 @@ export class ClinicService {
       throw new NotFoundException('halo');
     }
     const pwMatches = await argon.verify(user.password, dto.oldPassword);
-    console.log(pwMatches);
 
     if (!pwMatches) {
-      return new ForbiddenException('password lama salah');
+      throw new BadRequestException('password lama salah');
     }
     const hash = await argon.hash(dto.newPassword);
 
@@ -1027,22 +1078,22 @@ export class ClinicService {
 
     const service = await this.prisma.service.count({
       where: {
-        master_service_id : id
-      }
-    })
+        master_service_id: id,
+      },
+    });
 
-    const count :number = masterservice.price * service
+    const count: number = masterservice.price * service;
 
     if (!masterservice) {
       throw new NotFoundException('tidak ada data layanan , segera tambahkan');
     }
 
     const response = {
-      name : masterservice.name,
-      type : masterservice.type,
-      price : masterservice.price,
+      name: masterservice.name,
+      type: masterservice.type,
+      price: masterservice.price,
       count,
-    }
+    };
 
     return ClinicResponse(201, response, `mendapatkan master service`);
   }
@@ -1115,7 +1166,7 @@ export class ClinicService {
     });
     const idClinic: number = parseInt(payload.sub);
 
-    const findRegister = await this.prisma.master_Service.findMany({
+    const findRegister = await this.prisma.master_Service.findFirst({
       where: {
         clinic_id: idClinic,
         is_deleted: false,
@@ -1123,7 +1174,7 @@ export class ClinicService {
       },
     });
 
-    if (findRegister.length >= 1 && dto.type === 'registration') {
+    if (findRegister && dto.type === 'registration' && findRegister.id !== id) {
       throw new ForbiddenException(
         'biaya registrasi tiap klinik hanya boleh mempunyai satu harga',
       );

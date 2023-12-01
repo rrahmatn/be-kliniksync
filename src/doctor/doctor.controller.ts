@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -72,7 +73,20 @@ export class DoctorController {
 
   @UseGuards(JwtGuard, DoctorGuard)
   @Get('medicalhistory/:id')
-  async getMedicalHistoryById(@Param('id') id : string){
-    return this.DoctorService.getMedicalHistoryById(parseInt(id))
+  async getMedicalHistoryById(@Param('id') id: string) {
+    return this.DoctorService.getMedicalHistoryById(parseInt(id));
+  }
+  @UseGuards(JwtGuard, DoctorGuard)
+  @Get('getactive/:status')
+  async getActive(@Request() req: any, @Param('status') status: string) {
+    let inistatus: boolean;
+    if (status === 'true') {
+       inistatus = true;
+    } else if (status === 'false') {
+       inistatus = false;
+    } else {
+      throw new BadRequestException('gagal update data');
+    }
+    return this.DoctorService.getActive(req, inistatus);
   }
 }

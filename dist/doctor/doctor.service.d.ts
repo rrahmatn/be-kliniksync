@@ -52,7 +52,7 @@ export declare class DoctorService {
         status: number;
         data: {
             patient: {};
-            medical_history: {}[];
+            medical_history: {};
         };
         message: string;
     }>;
@@ -65,6 +65,12 @@ export declare class DoctorService {
             doctor: {};
             receptionist: string;
         };
+        message: string;
+    }>;
+    getActive(req: any, status: boolean): Promise<{
+        status: number;
+        data: {};
+        clinic_id: number;
         message: string;
     }>;
 }

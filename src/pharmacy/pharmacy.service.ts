@@ -16,10 +16,10 @@ import {
 } from 'src/response';
 import * as argon from 'argon2';
 import {
-  AddService,
-  EditMedicalHistoryPharmacy,
+  EditMedicalHistoryPharmacy
 } from 'src/doctor/dto';
 import { newQueue } from 'src/auth/types';
+import { AddServiceDto } from './dto';
 
 @Injectable()
 export class PharmacyService {
@@ -204,6 +204,7 @@ export class PharmacyService {
 
         if (patient) {
           queues.push({
+            id : patient.id,
             name: patient.name,
             address: patient.address,
             gender: patient.gender,
@@ -259,7 +260,7 @@ export class PharmacyService {
     );
   }
 
-  async addService(dto: AddService) {
+  async addService(dto: AddServiceDto) {
     try {
       const service = await this.prisma.service.create({
         data: {

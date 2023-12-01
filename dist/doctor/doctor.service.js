@@ -135,6 +135,7 @@ let DoctorService = class DoctorService {
             });
             if (patient) {
                 queues.push({
+                    id: patient.id,
                     name: patient.name,
                     address: patient.address,
                     gender: patient.gender,
@@ -209,9 +210,6 @@ let DoctorService = class DoctorService {
                 status: 'done',
             },
         });
-        if (medicalHistory.length < 1) {
-            throw new common_1.NotFoundException('pasien tidak pernanh berobat pada klinik yang memakai jasa aplikasi kami');
-        }
         const patient = await this.prisma.patient.findUnique({
             where: {
                 id,
@@ -219,6 +217,9 @@ let DoctorService = class DoctorService {
         });
         if (!patient) {
             throw new common_1.NotFoundException('pasien tidak ditemukan');
+        }
+        if (medicalHistory.length < 1) {
+            return (0, response_1.GetPatient)(200, patient, medicalHistory, 'berhasil mendapatkan data pasien');
         }
         return (0, response_1.GetPatient)(200, patient, medicalHistory, 'berhasil mendapatkan data pasien');
     }
@@ -277,6 +278,26 @@ let DoctorService = class DoctorService {
             services.push(masterservice);
         }));
         return (0, doctor_response_1.PatientResponse)(200, medicalHistory, clinic, patient.name, { name: doctor.name, spesialist: doctor.specialist }, receptionist.name, services, 'berhasil mendapatkan data');
+    }
+    async getActive(req, status) {
+        const token = req.headers.authorization?.split(' ') ?? [];
+        const accessToken = token[1];
+        const payload = await this.jwtService.verifyAsync(accessToken, {
+            secret: this.config.get('JWT_SECRET'),
+        });
+        const id = payload.sub;
+        const user = await this.prisma.doctor.update({
+            where: {
+                id: id
+            },
+            data: {
+                is_active: status
+            }
+        });
+        if (!user) {
+            throw new common_1.BadRequestException('gagal update status');
+        }
+        return (0, response_1.UserResponse)(200, user.is_active, user.clinic_id, 'berhasil mengubah status');
     }
 };
 exports.DoctorService = DoctorService;

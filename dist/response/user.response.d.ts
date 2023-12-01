@@ -18,7 +18,7 @@ export declare const GetPatient: (status: number, patient: {}, data: {}, message
     status: number;
     data: {
         patient: {};
-        medical_history: {}[];
+        medical_history: {};
     };
     message: string;
 };

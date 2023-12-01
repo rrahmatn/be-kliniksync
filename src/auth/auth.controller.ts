@@ -39,4 +39,12 @@ export class AuthController {
     const newTokens = await this.authService.refreshToken(refreshToken[1]);
     return newTokens;
   }
+
+
+  @Get('/')
+  async getAku(){
+    return {
+      "ini" : "aku"
+    }
+  }
 }

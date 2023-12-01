@@ -193,6 +193,7 @@ export class CashierService {
 
         if (patient) {
           queues.push({
+            id : patient.id,
             name: patient.name,
             address: patient.address,
             gender: patient.gender,
@@ -264,6 +265,7 @@ export class CashierService {
         });
         total.push({
           name: master.name,
+          type : master.type,
           price: master.price,
         });
       }),
@@ -274,8 +276,8 @@ export class CashierService {
     return CashierResponse(
       200,
       medicalHistory,
-      patient,
       clinic,
+      patient,
       doctor,
       pharmacy,
       total,

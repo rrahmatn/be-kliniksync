@@ -7,6 +7,7 @@ export type NewToken = {
 };
 
 export type newQueue ={
+  id : number ,
   name : string ,
   address : string ,
   gender : string,
@@ -14,6 +15,7 @@ export type newQueue ={
 }
 
 export type ServiceCashier = {
-  name : string , 
+  name : string ,
+  type : string , 
   price : number
 }

@@ -26,7 +26,7 @@ export const GetPatient = (status : number , patient : {} , data : {} , message 
     status , 
     data : {
       patient , 
-      medical_history : [data]
+      medical_history : data
     },
     message
   }

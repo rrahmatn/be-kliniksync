@@ -6,6 +6,7 @@ export type NewToken = {
     access_token: string;
 };
 export type newQueue = {
+    id: number;
     name: string;
     address: string;
     gender: string;
@@ -13,5 +14,6 @@ export type newQueue = {
 };
 export type ServiceCashier = {
     name: string;
+    type: string;
     price: number;
 };

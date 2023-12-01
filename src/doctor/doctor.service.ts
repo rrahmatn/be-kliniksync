@@ -186,9 +186,9 @@ export class DoctorService {
             id: e.patient_id,
           },
         });
-
         if (patient) {
           queues.push({
+            id : patient.id,
             name: patient.name,
             address: patient.address,
             gender : patient.gender,
@@ -286,22 +286,26 @@ export class DoctorService {
       },
     });
 
-    if (medicalHistory.length < 1) {
-      throw new NotFoundException(
-        'pasien tidak pernanh berobat pada klinik yang memakai jasa aplikasi kami',
-      );
-    }
-
+    
     const patient = await this.prisma.patient.findUnique({
       where: {
         id,
       },
     });
 
+
     if (!patient) {
       throw new NotFoundException('pasien tidak ditemukan');
     }
-
+    
+    if (medicalHistory.length < 1) {
+      return GetPatient(
+        200,
+        patient,
+        medicalHistory ,
+        'berhasil mendapatkan data pasien',
+      );
+    }
     return GetPatient(
       200,
       patient,
@@ -386,4 +390,34 @@ export class DoctorService {
       'berhasil mendapatkan data',
     );
   }
+
+
+  async getActive (req : any , status : boolean){
+    const token = req.headers.authorization?.split(' ') ?? [];
+    const accessToken = token[1];
+
+    const payload = await this.jwtService.verifyAsync(accessToken, {
+      secret: this.config.get('JWT_SECRET'),
+    });
+    const id = payload.sub;
+
+    const user = await this.prisma.doctor.update({
+      where : {
+        id : id
+      },
+      data : {
+        is_active : status
+      }
+    })
+
+
+    if(!user){
+      throw new BadRequestException('gagal update status')
+    }
+
+
+    return UserResponse(200 , user.is_active , user.clinic_id , 'berhasil mengubah status')
+  }
+
+  
 }

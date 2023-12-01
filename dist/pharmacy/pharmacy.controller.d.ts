@@ -1,6 +1,7 @@
 import { PharmacyService } from './pharmacy.service';
 import { ChangePassword, EditUser } from 'src/global-dto';
 import { EditMedicalHistoryPharmacy } from 'src/doctor/dto';
+import { AddServiceDto } from './dto';
 export declare class PharmacyController {
     private PharmacyServices;
     constructor(PharmacyServices: PharmacyService);
@@ -32,7 +33,7 @@ export declare class PharmacyController {
         service: {};
         message: string;
     }>;
-    addService(req: any): Promise<{
+    addService(dto: AddServiceDto): Promise<{
         status: number;
         data: {};
         clinic_id: number;

@@ -42,7 +42,6 @@ model Clinic {
 model Doctor {
   id        Int @id @default(autoincrement())
   clinic_id Int
-
   name       String
   email      String @unique
   password   String
@@ -74,7 +73,6 @@ model Pharmacy {
 model Receptionist {
   id        Int @id @default(autoincrement())
   clinic_id Int
-
   name     String
   email    String @unique
   password String
@@ -82,14 +80,12 @@ model Receptionist {
   is_deleted Boolean  @default(false)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-
   @@map("Receptionist")
 }
 
 model Cashier {
   id        Int @id @default(autoincrement())
   clinic_id Int
-
   name     String
   email    String @unique
   password String
@@ -103,10 +99,10 @@ model Cashier {
 
 model Patient {
   id Int @id @default(autoincrement())
-
+  nik String @default("")
   name    String
   phone String @unique
-  birth_date DateTime  @db.Timestamptz()
+  birth_date DateTime @db.Timestamptz()
   gender  String
   address String
 

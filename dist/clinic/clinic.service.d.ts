@@ -1,4 +1,4 @@
-import { ForbiddenException, NotFoundException } from '@nestjs/common';
+import { NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -32,7 +32,7 @@ export declare class ClinicService {
             updated_at: Date;
         };
     }>;
-    changePassword(req: any, dto: ChangePassword): Promise<ForbiddenException | {
+    changePassword(req: any, dto: ChangePassword): Promise<{
         message: string;
         data: {
             id: number;

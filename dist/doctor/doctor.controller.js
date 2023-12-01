@@ -50,6 +50,19 @@ let DoctorController = class DoctorController {
     async getMedicalHistoryById(id) {
         return this.DoctorService.getMedicalHistoryById(parseInt(id));
     }
+    async getActive(req, status) {
+        let inistatus;
+        if (status === 'true') {
+            inistatus = true;
+        }
+        else if (status === 'false') {
+            inistatus = false;
+        }
+        else {
+            throw new common_1.BadRequestException('gagal update data');
+        }
+        return this.DoctorService.getActive(req, inistatus);
+    }
 };
 exports.DoctorController = DoctorController;
 __decorate([
@@ -127,6 +140,15 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], DoctorController.prototype, "getMedicalHistoryById", null);
+__decorate([
+    (0, common_1.UseGuards)(guard_1.JwtGuard, guard_1.DoctorGuard),
+    (0, common_1.Get)('getactive/:status'),
+    __param(0, (0, common_1.Request)()),
+    __param(1, (0, common_1.Param)('status')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], DoctorController.prototype, "getActive", null);
 exports.DoctorController = DoctorController = __decorate([
     (0, common_1.Controller)('doctor'),
     (0, swagger_1.ApiTags)('doctor'),

@@ -36,6 +36,11 @@ let AuthController = class AuthController {
         const newTokens = await this.authService.refreshToken(refreshToken[1]);
         return newTokens;
     }
+    async getAku() {
+        return {
+            "ini": "aku"
+        };
+    }
 };
 exports.AuthController = AuthController;
 __decorate([
@@ -60,6 +65,12 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "refresh", null);
+__decorate([
+    (0, common_1.Get)('/'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "getAku", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     (0, swagger_1.ApiTags)('auth'),

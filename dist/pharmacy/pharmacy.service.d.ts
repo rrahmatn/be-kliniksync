@@ -2,7 +2,8 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { ChangePassword, EditUser } from 'src/global-dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { AddService, EditMedicalHistoryPharmacy } from 'src/doctor/dto';
+import { EditMedicalHistoryPharmacy } from 'src/doctor/dto';
+import { AddServiceDto } from './dto';
 export declare class PharmacyService {
     private prisma;
     private jwtService;
@@ -36,7 +37,7 @@ export declare class PharmacyService {
         service: {};
         message: string;
     }>;
-    addService(dto: AddService): Promise<{
+    addService(dto: AddServiceDto): Promise<{
         status: number;
         data: {};
         clinic_id: number;

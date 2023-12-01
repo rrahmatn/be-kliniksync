@@ -143,6 +143,7 @@ let CashierService = class CashierService {
             });
             if (patient) {
                 queues.push({
+                    id: patient.id,
                     name: patient.name,
                     address: patient.address,
                     gender: patient.gender,
@@ -201,11 +202,12 @@ let CashierService = class CashierService {
             });
             total.push({
                 name: master.name,
+                type: master.type,
                 price: master.price,
             });
         }));
         let totalPayment = total.reduce((sum, item) => sum + item.price, 0);
-        return (0, response_1.CashierResponse)(200, medicalHistory, patient, clinic, doctor, pharmacy, total, totalPayment, `berhasil mendapatkan semua tagihan ${patient.name}`);
+        return (0, response_1.CashierResponse)(200, medicalHistory, clinic, patient, doctor, pharmacy, total, totalPayment, `berhasil mendapatkan semua tagihan ${patient.name}`);
     }
     async getDone(id, req) {
         const token = req.headers.authorization?.split(' ') ?? [];

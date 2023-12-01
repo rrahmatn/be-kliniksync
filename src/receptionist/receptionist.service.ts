@@ -128,7 +128,7 @@ export class ReceptionistService {
 
     const user = await this.prisma.receptionist.update({
       where: {
-        id : payload.sub,
+        id: payload.sub,
       },
       data: {
         password,
@@ -146,8 +146,6 @@ export class ReceptionistService {
       `berhasil mengganti password ${user.name}`,
     );
   }
-
-
 
   async addPatient(dto: AddPatient) {
     const phone = await this.prisma.patient.findFirst({
@@ -197,6 +195,16 @@ export class ReceptionistService {
       }
     }
 
+    let birth_date: Date;
+
+    if (!dto.birth_date) {
+      delete dto.birth_date;
+    } else {
+      birth_date = new Date(dto.birth_date);
+    }
+
+    delete dto.birth_date;
+
     if (dto.phone) {
       const user = await this.prisma.patient.findUnique({
         where: {
@@ -229,6 +237,7 @@ export class ReceptionistService {
         id,
       },
       data: {
+        birth_date: birth_date,
         ...dto,
       },
     });
@@ -245,7 +254,7 @@ export class ReceptionistService {
       where: {
         clinic_id,
         is_deleted: false,
-        // is_active : true
+        is_active: true,
       },
     });
 
@@ -264,6 +273,7 @@ export class ReceptionistService {
         delete e.is_deleted;
 
         doctorResponse.push({
+          id: e.id,
           name: e.name,
           specialist: e.specialist, // Corrected the key name
           queue: queue,
@@ -308,7 +318,6 @@ export class ReceptionistService {
         },
       },
     });
-    console.log(cekQueue);
     if (cekQueue) {
       throw new ForbiddenException(
         'pasien masih ada transaksi yang belum lunas atau pengobatan yang masih berjalan',
@@ -387,6 +396,33 @@ export class ReceptionistService {
       `berhasil mendaptkan data pasien`,
     );
   }
+  async searchPatientByNik(nik: string) {
+    if (nik.length < 8) {
+      throw new BadRequestException(
+        'minimal masukan 8 angkar untuk pencarian berdasarnkan nik',
+      );
+    }
+
+    const patient = await this.prisma.patient.findMany({
+      where: {
+        nik: {
+          contains: nik,
+        },
+      },
+    });
+
+    if (patient.length < 1) {
+      throw new NotFoundException(
+        'data pasien tidak ditemukan , silahkan tambah data pasien',
+      );
+    }
+
+    return ReceptionistResponse(
+      200,
+      patient,
+      `berhasil mendaptkan data pasien`,
+    );
+  }
 
   async getPatient(id: number) {
     const patient = await this.prisma.patient.findUnique({
@@ -422,5 +458,33 @@ export class ReceptionistService {
       response,
       `berhasil mendapatkan data ${patient.name}`,
     );
+  }
+
+
+  async getAllQueue(req:any){
+    const token = req.headers.authorization?.split(' ') ?? [];
+    const accessToken = token[1];
+
+    const payload = await this.jwtService.verifyAsync(accessToken, {
+      secret: this.config.get('JWT_SECRET'),
+    });
+
+    const id = payload.sub;
+
+    const user = await this.prisma.receptionist.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    const queue = await this.prisma.medical_History.count({
+      where :{
+        clinic_id : user.clinic_id ,
+        status : 'on_doctor'
+      }
+    })
+
+    return ReceptionistResponse(200 , queue ,'berhasil mendapatkan antrian')
+
   }
 }

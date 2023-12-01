@@ -19,6 +19,7 @@ const pharmacy_service_1 = require("./pharmacy.service");
 const guard_1 = require("../auth/guard");
 const global_dto_1 = require("../global-dto");
 const dto_1 = require("../doctor/dto");
+const dto_2 = require("./dto");
 let PharmacyController = class PharmacyController {
     constructor(PharmacyServices) {
         this.PharmacyServices = PharmacyServices;
@@ -38,8 +39,8 @@ let PharmacyController = class PharmacyController {
     async getService(req) {
         return this.PharmacyServices.getService(req);
     }
-    async addService(req) {
-        return this.PharmacyServices.addService(req);
+    async addService(dto) {
+        return this.PharmacyServices.addService(dto);
     }
     async editMEdicalHistory(id, req, dto) {
         return this.PharmacyServices.editMedicalHistory(parseInt(id), req, dto);
@@ -91,9 +92,9 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(guard_1.JwtGuard, guard_1.PharmacyGuard),
     (0, common_1.Post)('service'),
-    __param(0, (0, common_1.Request)()),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [dto_2.AddServiceDto]),
     __metadata("design:returntype", Promise)
 ], PharmacyController.prototype, "addService", null);
 __decorate([

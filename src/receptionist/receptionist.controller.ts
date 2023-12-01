@@ -70,9 +70,20 @@ export class ReceptionistController {
   }
 
   @UseGuards(JwtGuard, ReceptionistGuard)
+  @Get('patient/nik/:nik')
+  async searchPatientByNik(@Param('nik') nik: string) {
+    return this.ReceptionistService.searchPatientByNik(nik);
+  }
+
+  @UseGuards(JwtGuard, ReceptionistGuard)
   @Get('patientid/:id')
   async getPatient(@Param('id') id: string) {
     return this.ReceptionistService.getPatient(parseInt(id));
   }
-
+  
+  @UseGuards(JwtGuard, ReceptionistGuard)
+  @Get('allqueue')
+  async getAllQueue(@Request() req: any){
+    return this.ReceptionistService.getAllQueue(req)
+  }
 }

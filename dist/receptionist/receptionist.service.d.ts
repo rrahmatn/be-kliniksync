@@ -33,6 +33,7 @@ export declare class ReceptionistService {
     }>;
     editPatient(id: number, dto: EditPatient): Promise<{
         id: number;
+        nik: string;
         name: string;
         phone: string;
         birth_date: Date;
@@ -57,7 +58,17 @@ export declare class ReceptionistService {
         data: {};
         message: string;
     }>;
+    searchPatientByNik(nik: string): Promise<{
+        status: number;
+        data: {};
+        message: string;
+    }>;
     getPatient(id: number): Promise<{
+        status: number;
+        data: {};
+        message: string;
+    }>;
+    getAllQueue(req: any): Promise<{
         status: number;
         data: {};
         message: string;

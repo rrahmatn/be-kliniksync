@@ -48,8 +48,14 @@ let ReceptionistController = class ReceptionistController {
     async searchPatient(phone) {
         return this.ReceptionistService.searchPatient(phone);
     }
+    async searchPatientByNik(nik) {
+        return this.ReceptionistService.searchPatientByNik(nik);
+    }
     async getPatient(id) {
         return this.ReceptionistService.getPatient(parseInt(id));
+    }
+    async getAllQueue(req) {
+        return this.ReceptionistService.getAllQueue(req);
     }
 };
 exports.ReceptionistController = ReceptionistController;
@@ -123,12 +129,28 @@ __decorate([
 ], ReceptionistController.prototype, "searchPatient", null);
 __decorate([
     (0, common_1.UseGuards)(guard_1.JwtGuard, receptionist_guard_1.ReceptionistGuard),
+    (0, common_1.Get)('patient/nik/:nik'),
+    __param(0, (0, common_1.Param)('nik')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], ReceptionistController.prototype, "searchPatientByNik", null);
+__decorate([
+    (0, common_1.UseGuards)(guard_1.JwtGuard, receptionist_guard_1.ReceptionistGuard),
     (0, common_1.Get)('patientid/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], ReceptionistController.prototype, "getPatient", null);
+__decorate([
+    (0, common_1.UseGuards)(guard_1.JwtGuard, receptionist_guard_1.ReceptionistGuard),
+    (0, common_1.Get)('allqueue'),
+    __param(0, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ReceptionistController.prototype, "getAllQueue", null);
 exports.ReceptionistController = ReceptionistController = __decorate([
     (0, common_1.Controller)('receptionist'),
     (0, swagger_1.ApiTags)('receptionist'),

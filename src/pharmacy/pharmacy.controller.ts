@@ -13,6 +13,7 @@ import { PharmacyService } from './pharmacy.service';
 import { JwtGuard, PharmacyGuard } from 'src/auth/guard';
 import { ChangePassword, EditUser } from 'src/global-dto';
 import { EditMedicalHistoryPharmacy } from 'src/doctor/dto';
+import { AddServiceDto } from './dto';
 
 @Controller('pharmacy')
 @ApiTags('pharmacy')
@@ -53,8 +54,8 @@ export class PharmacyController {
 
   @UseGuards(JwtGuard, PharmacyGuard)
   @Post('service')
-  async addService(@Request() req: any) {
-    return this.PharmacyServices.addService(req);
+  async addService(@Body() dto:AddServiceDto) {
+    return this.PharmacyServices.addService(dto);
   }
   @UseGuards(JwtGuard, PharmacyGuard)
   @Patch('medicalhistory/:id')

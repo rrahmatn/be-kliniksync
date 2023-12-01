@@ -1,4 +1,3 @@
-import { ForbiddenException } from '@nestjs/common';
 import { ChangePassword, EditClinicDto, EditDoctor, EditEmployes, EditMasterService, ForceChangePassword, MasterService, NewDoctor, NewEmpolye } from './dto';
 import { ClinicService } from './clinic.service';
 import { JwtService } from '@nestjs/jwt';
@@ -30,7 +29,7 @@ export declare class ClinicController {
             updated_at: Date;
         };
     }>;
-    changePassword(dto: ChangePassword, req: any): Promise<ForbiddenException | {
+    changePassword(dto: ChangePassword, req: any): Promise<{
         message: string;
         data: {
             id: number;

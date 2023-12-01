@@ -48,7 +48,7 @@ export declare class DoctorController {
         status: number;
         data: {
             patient: {};
-            medical_history: {}[];
+            medical_history: {};
         };
         message: string;
     }>;
@@ -61,6 +61,12 @@ export declare class DoctorController {
             doctor: {};
             receptionist: string;
         };
+        message: string;
+    }>;
+    getActive(req: any, status: string): Promise<{
+        status: number;
+        data: {};
+        clinic_id: number;
         message: string;
     }>;
 }

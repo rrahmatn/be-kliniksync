@@ -29,6 +29,7 @@ export declare class ReceptionistController {
     }>;
     editPatient(id: string, dto: EditPatient): Promise<{
         id: number;
+        nik: string;
         name: string;
         phone: string;
         birth_date: Date;
@@ -53,7 +54,17 @@ export declare class ReceptionistController {
         data: {};
         message: string;
     }>;
+    searchPatientByNik(nik: string): Promise<{
+        status: number;
+        data: {};
+        message: string;
+    }>;
     getPatient(id: string): Promise<{
+        status: number;
+        data: {};
+        message: string;
+    }>;
+    getAllQueue(req: any): Promise<{
         status: number;
         data: {};
         message: string;

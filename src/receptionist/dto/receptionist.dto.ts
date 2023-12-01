@@ -6,6 +6,11 @@ export class AddPatient {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
+  nik: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
   name: string;
 
   @ApiProperty()
@@ -33,6 +38,11 @@ export class EditPatient {
   @ApiProperty()
   @IsString()
   @IsOptional()
+  nik?: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
   name?: string;
 
   @ApiProperty()
@@ -44,6 +54,12 @@ export class EditPatient {
   @IsString()
   @IsOptional()
   address?: string;
+
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  birth_date?: string;
 
   @ApiProperty()
   @IsString()

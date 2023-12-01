@@ -144,6 +144,7 @@ let PharmacyService = class PharmacyService {
             });
             if (patient) {
                 queues.push({
+                    id: patient.id,
                     name: patient.name,
                     address: patient.address,
                     gender: patient.gender,
